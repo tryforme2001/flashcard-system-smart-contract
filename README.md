@@ -1,71 +1,97 @@
-# flashcard-system-smart-contract
-
-Here is a README file for the given Solidity code:
-
 Flashcard System Smart Contract
-This Solidity smart contract provides a decentralized flashcard management system. Users can create and view flashcards, with each flashcard containing a question, an answer, and a timestamp indicating its creation time.
+
+This Solidity smart contract, FlashcardSystem, provides a decentralized platform for creating and managing flashcards on the Ethereum blockchain. Users can create flashcards with questions and answers, and retrieve their content by ID.
 
 Features
-Create Flashcards: Users can create flashcards by providing a question and an answer. Each flashcard is assigned a unique ID.
-View Flashcards: Users can retrieve the details of a specific flashcard using its ID.
-Contract Details
-Prerequisites
-Solidity Version: ^0.8.0
-License: MIT
-State Variables
-struct Flashcard:
 
-question (string): The question text.
-answer (string): The answer text.
-timestamp (uint256): The creation time of the flashcard.
-mapping(uint256 => Flashcard) public flashcards:
+1. Create a Flashcard
 
-A mapping to store flashcards by their unique IDs.
-uint256 public flashcardIdCounter:
+Function: createFlashcard(string calldata question, string calldata answer)
 
-A counter to generate unique IDs for flashcards.
-Events
-FlashcardCreated:
-Emitted when a new flashcard is created.
-Parameters:
-uint256 indexed flashcardId: The unique ID of the flashcard.
-string question: The question text.
-string answer: The answer text.
-Functions
-1. createFlashcard(string calldata question, string calldata answer) external
-Creates a new flashcard with the given question and answer.
+Description:
 
-Inputs:
-question: The question for the flashcard.
-answer: The answer to the question.
+Allows users to create a flashcard with a question and an answer.
+
+Each flashcard is assigned a unique ID.
+
+Emits a FlashcardCreated event upon successful creation.
+
 Requirements:
-The question and answer must not be empty.
-Effects:
-Increments flashcardIdCounter to generate a unique ID.
-Creates a new Flashcard struct.
-Stores the flashcard in the flashcards mapping.
-Event:
-Emits FlashcardCreated upon successful creation.
-2. viewFlashcard(uint256 flashcardId) external view returns (string memory question, string memory answer, uint256 timestamp)
-Retrieves the details of a specific flashcard.
 
-Inputs:
-flashcardId: The ID of the flashcard to retrieve.
-Outputs:
-question: The question text.
-answer: The answer text.
-timestamp: The creation time of the flashcard.
+question and answer cannot be empty strings.
+
+2. View a Flashcard
+
+Function: viewFlashcard(uint256 flashcardId)
+
+Description:
+
+Retrieves the details of a flashcard by its unique ID.
+
+Returns the question, answer, and the timestamp of creation.
+
 Requirements:
-The flashcard with the given ID must exist.
-Usage
+
+The flashcard must exist; otherwise, an error is thrown.
+
+Contract Components
+
+1. Struct: Flashcard
+
+Represents a flashcard with the following fields:
+
+question: The text of the question.
+
+answer: The text of the answer.
+
+timestamp: The creation timestamp of the flashcard.
+
+2. State Variables
+
+mapping(uint256 => Flashcard) public flashcards;
+
+Stores flashcards by their unique ID.
+
+uint256 public flashcardIdCounter;
+
+Tracks the total number of flashcards created and ensures unique IDs.
+
+3. Events
+
+event FlashcardCreated(uint256 indexed flashcardId, string question, string answer);
+
+Logs the creation of a flashcard.
+
 Deployment
-Deploy the contract using any Ethereum-compatible environment (e.g., Remix, Hardhat).
-Interact with the contract by calling its functions.
-Interaction
-Create a Flashcard: Call createFlashcard with a non-empty question and answer.
-View a Flashcard: Call viewFlashcard with the flashcard's unique ID to retrieve its details.
-Security Notes
-Ensure only valid flashcards are created by adhering to the input validation rules.
-Invalid IDs in viewFlashcard will revert with an appropriate error.
+
+Use a Solidity-compatible environment such as Remix, Hardhat, or Truffle.
+
+Ensure the Solidity compiler version is ^0.8.0.
+
+Deploy the contract to your desired Ethereum network.
+
+Usage
+
+Creating a Flashcard
+
+Call the createFlashcard function with the desired question and answer. Example:
+
+createFlashcard("What is Solidity?", "A programming language for Ethereum smart contracts.");
+
+Viewing a Flashcard
+
+Retrieve a flashcard's details using its unique ID. Example:
+
+(string memory question, string memory answer, uint256 timestamp) = viewFlashcard(1);
+
+Error Handling
+
+Question cannot be empty: Triggered if the question is an empty string.
+
+Answer cannot be empty: Triggered if the answer is an empty string.
+
+Flashcard not found: Triggered if no flashcard exists for the provided ID.
+
 License
+
 This project is licensed under the MIT License.
